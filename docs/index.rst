@@ -1,0 +1,5 @@
+====================
+noeku.linguacollage
+====================
+
+User documentation

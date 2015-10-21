@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<layers>
+  <layer
+      name="noeku.linguacollage"
+      interface="noeku.linguacollage.interfaces.INoekuLinguacollageLayer"
+      />
+</layers>

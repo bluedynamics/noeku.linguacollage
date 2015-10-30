@@ -44,6 +44,8 @@ setup(
     zip_safe=False,
     install_requires=[
         'plone.api',
+        'Products.Collage',
+        'Products.LinguaPlone',
         'setuptools',
         'z3c.jbot',
     ],

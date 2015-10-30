@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-from Products.LinguaPlone.events import IObjectTranslatedEvent
-# -*- coding: utf-8 -*-
-
 
 def translate_collage_recursivly(event, context):
     """Event handler on translate of a collage.

@@ -68,13 +68,29 @@ def translate_col_recursivly(context, event):
             # already translated in target language
             # this happends in rare case one translates a content manually
             continue
-        if collageifaces.ICollageAlias.providedBy(context):
+        if collageifaces.ICollageAlias.providedBy(content):
             # check if alias target is translated, otherwise fail.
-            pass
-        content.addTranslation(event.language)
-        if collageifaces.ICollageAlias.providedBy(context):
+            target = content.get_target()
+            if target is None:
+                raise ValueError(
+                    'Alias without target {0}'.format(
+                        content.absolute_url()
+                    )
+                )
+            if not target.hasTranslation(event.language):
+                raise ValueError(
+                    '"{0}" translation not found for Alias target {1}'.format(
+                        event.language,
+                        target.absolute_url()
+                    )
+                )
+        translated = content.addTranslation(event.language)
+        if collageifaces.ICollageAlias.providedBy(translated):
             # set alias target of translation to translation of alias target :)
-            pass
+            target = content.get_target()
+            translated.set_target(
+                target.getTranslation(event.language)
+            )
         else:
             # something left?
             pass

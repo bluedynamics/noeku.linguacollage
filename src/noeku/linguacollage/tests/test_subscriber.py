@@ -58,7 +58,7 @@ class TestSetup(unittest.TestCase):
             self.collage['r1'],
             type='CollageColumn',
             id='c1',
-            title='Col 2'
+            title='Col 1'
         )
         api.content.create(
             self.collage['r1'],
@@ -69,3 +69,34 @@ class TestSetup(unittest.TestCase):
         collage_de = self.collage.addTranslation('de')
         self.assertIn('c1', collage_de['r1'])
         self.assertIn('c2', collage_de['r1'])
+
+    def test_recursive_translate_collage_with_alias(self):
+        api.content.create(
+            self.portal,
+            type='Document',
+            id='d1',
+            title='Doc 1',
+            language='it',
+        )
+        self.portal.d1.addTranslation('de')
+        api.content.create(
+            self.collage,
+            type='CollageRow',
+            id='r1',
+            title='Row 1'
+        )
+        api.content.create(
+            self.collage['r1'],
+            type='CollageColumn',
+            id='c1',
+            title='Col 1'
+        )
+        alias = api.content.create(
+            self.collage['r1']['c1'],
+            type='CollageAlias',
+            id='a1',
+            title='Alias 1'
+        )
+        alias.set_target(self.portal.d1)
+        collage_de = self.collage.addTranslation('de')
+        self.assertIn('a1', collage_de['r1']['c1'])

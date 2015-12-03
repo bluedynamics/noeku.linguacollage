@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from noeku.linguacollage.testing import NOEKU_LINGUACOLLAGE_INTEGRATION_TESTING  # noqa
+from noeku.linguacollage.testing import NOEKU_LINGUACOLLAGE_INTEGRATION_TESTING
 from plone import api
 from plone.app.testing import login
 from plone.app.testing import setRoles

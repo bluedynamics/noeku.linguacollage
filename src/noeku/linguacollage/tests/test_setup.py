@@ -2,7 +2,6 @@
 """Setup tests for this package."""
 from noeku.linguacollage.testing import NOEKU_LINGUACOLLAGE_INTEGRATION_TESTING  # noqa
 from plone import api
-
 import unittest
 
 

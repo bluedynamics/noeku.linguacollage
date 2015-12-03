@@ -1,27 +1,56 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_parent
-from Product.Collage import interfaces as collageifaces
+from Products.Collage import interfaces as collageifaces
+import logging
+
+logger = logging.getLogger(__name__)
 
 
-def translate_collage_recursivly(event, context):
+def _log(msg):
+    logger.log(logging.INFO, msg)
+
+
+def translate_collage_recursivly(context, event):
     """Event handler on translate of a collage.
 
     - Iterates over all contained rows and translates them.
     """
     if not collageifaces.ICollage.providedBy(context):
         return
+    canonical = context.getCanonical()
+    _log('recursive translate collage {0}'.format(
+        '/'.join(context.getPhysicalPath())
+    ))
+    for rowid in canonical.contentIds():
+        row = context[rowid]
+        if row.hasTranslation(event.language):
+            # already translated in target language
+            # this happends in rare case one translates a row manually
+            continue
+        row.addTranslation(event.language)
 
 
-def translate_row_recursivly(event, context):
+def translate_row_recursivly(context, event):
     """Event handler on translate of a row.
 
     - Iterates over all contained cols and translates them.
     """
     if not collageifaces.ICollageRow.providedBy(context):
         return
+    canonical = context.getCanonical()
+    _log('recursive translate collage row {0}'.format(
+        '/'.join(context.getPhysicalPath())
+    ))
+    for colid in canonical.contentIds():
+        col = context[colid]
+        if col.hasTranslation(event.language):
+            # already translated in target language
+            # this happends in rare case one translates a col manually
+            continue
+        col.addTranslation(event.language)
 
 
-def translate_col_recursivly(event, context):
+def translate_col_recursivly(context, event):
     """Event handler on translate of a column.
 
     - Iterates over all contained content and translates it.
@@ -29,9 +58,29 @@ def translate_col_recursivly(event, context):
     """
     if not collageifaces.ICollageColumn.providedBy(context):
         return
+    canonical = context.getCanonical()
+    _log('recursive translate collage column {0}'.format(
+        '/'.join(context.getPhysicalPath())
+    ))
+    for contentid in canonical.contentIds():
+        content = context[contentid]
+        if content.hasTranslation(event.language):
+            # already translated in target language
+            # this happends in rare case one translates a content manually
+            continue
+        if collageifaces.ICollageAlias.providedBy(context):
+            # check if alias target is translated, otherwise fail.
+            pass
+        content.addTranslation(event.language)
+        if collageifaces.ICollageAlias.providedBy(context):
+            # set alias target of translation to translation of alias target :)
+            pass
+        else:
+            # something left?
+            pass
 
 
-def added_row(event, context):
+def added_row(context, event):
     """Event handler on create of a new row
 
     - creates translations of itself at the right place in all
@@ -41,7 +90,7 @@ def added_row(event, context):
         return
 
 
-def added_col(event, context):
+def added_col(context, event):
     """Event handler on create of a new col
 
     - creates translations of itself at the right place in all
@@ -51,7 +100,7 @@ def added_col(event, context):
         return
 
 
-def added_content(event, context):
+def added_content(context, event):
     """Event handler on create of a new content
 
     - not for aliases
@@ -61,13 +110,13 @@ def added_content(event, context):
     """
     parent = aq_parent(context)
     if (
-        not collageifaces.ICollageRow.providedBy(parent)
-        or collageifaces.ICollageAlias.providedBy(context)
+        not collageifaces.ICollageRow.providedBy(parent) or
+        collageifaces.ICollageAlias.providedBy(context)
     ):
         return
 
 
-def added_alias(event, context):
+def added_alias(context, event):
     """Event handler on create of a new content
 
     - creates translations of itself at the right place in all
@@ -78,7 +127,7 @@ def added_alias(event, context):
         return
 
 
-def deleted_row(event, context):
+def deleted_row(context, event):
     """Event handler on delete of a row
 
     - deletes all translations of itself with all their content
@@ -87,7 +136,7 @@ def deleted_row(event, context):
         return
 
 
-def deleted_col(event, context):
+def deleted_col(context, event):
     """Event handler on delete of a col
 
     - deletes all translations of itself with all their content
@@ -96,7 +145,7 @@ def deleted_col(event, context):
         return
 
 
-def deleted_content(event, context):
+def deleted_content(context, event):
     """Event handler on delete of a content
 
     - valid for aliases too

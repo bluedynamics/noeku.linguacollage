@@ -8,6 +8,8 @@ from plone.app.testing import PloneSandboxLayer
 from plone.testing import z2
 
 import noeku.linguacollage
+import Products.Collage
+import Products.LinguaPlone
 
 
 class NoekuLinguacollageLayer(PloneSandboxLayer):
@@ -15,7 +17,11 @@ class NoekuLinguacollageLayer(PloneSandboxLayer):
     defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
+        self.loadZCML(package=Products.LinguaPlone)
+        self.loadZCML(package=Products.Collage)
         self.loadZCML(package=noeku.linguacollage)
+        z2.installProduct(app, 'Products.LinguaPlone')
+        z2.installProduct(app, 'Products.Collage')
 
     def setUpPloneSite(self, portal):
         applyProfile(portal, 'noeku.linguacollage:default')

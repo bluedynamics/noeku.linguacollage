@@ -43,4 +43,6 @@ class TestSetup(unittest.TestCase):
             id='2',
             title='Row 2'
         )
-        # import ipdb; ipdb.set_trace()
+        collage_de = self.collage.addTranslation('de')
+        self.assertIn('1', collage_de)
+        self.assertIn('2', collage_de)

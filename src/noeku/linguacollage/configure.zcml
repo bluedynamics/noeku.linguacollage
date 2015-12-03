@@ -24,4 +24,14 @@
            Products.LinguaPlone.events.IObjectTranslatedEvent"
       handler=".subscriber.translate_collage_recursivly"
   />
+  <subscriber
+      for="Products.LinguaPlone.interfaces.ITranslatable
+           Products.LinguaPlone.events.IObjectTranslatedEvent"
+      handler=".subscriber.translate_row_recursivly"
+  />
+  <subscriber
+      for="Products.LinguaPlone.interfaces.ITranslatable
+           Products.LinguaPlone.events.IObjectTranslatedEvent"
+      handler=".subscriber.translate_col_recursivly"
+  />
 </configure>

@@ -30,7 +30,7 @@ class TestSetup(unittest.TestCase):
             language='it',
         )
 
-    def test_recursive_translate_collage(self):
+    def test_recursive_translate_collage_with_rows(self):
         api.content.create(
             self.collage,
             type='CollageRow',
@@ -46,3 +46,26 @@ class TestSetup(unittest.TestCase):
         collage_de = self.collage.addTranslation('de')
         self.assertIn('1', collage_de)
         self.assertIn('2', collage_de)
+
+    def test_recursive_translate_collage_with_cols(self):
+        api.content.create(
+            self.collage,
+            type='CollageRow',
+            id='r1',
+            title='Row 1'
+        )
+        api.content.create(
+            self.collage['r1'],
+            type='CollageColumn',
+            id='c1',
+            title='Col 2'
+        )
+        api.content.create(
+            self.collage['r1'],
+            type='CollageColumn',
+            id='c2',
+            title='Col 2'
+        )
+        collage_de = self.collage.addTranslation('de')
+        self.assertIn('c1', collage_de['r1'])
+        self.assertIn('c2', collage_de['r1'])

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from Acquisition import aq_base
 from noeku.linguacollage.testing import NOEKU_LINGUACOLLAGE_INTEGRATION_TESTING
 from plone import api
 from plone.app.testing import login
@@ -78,7 +79,7 @@ class TestSetup(unittest.TestCase):
             title='Doc 1',
             language='it',
         )
-        self.portal.d1.addTranslation('de')
+        d1de = self.portal.d1.addTranslation('de')
         api.content.create(
             self.collage,
             type='CollageRow',
@@ -100,3 +101,7 @@ class TestSetup(unittest.TestCase):
         alias.set_target(self.portal.d1)
         collage_de = self.collage.addTranslation('de')
         self.assertIn('a1', collage_de['r1']['c1'])
+        self.assertIs(
+            aq_base(collage_de['r1']['c1']['a1'].get_target()),
+            aq_base(d1de)
+        )

@@ -104,6 +104,10 @@ def added_row(context, event):
     """
     if not collageifaces.ICollageRow.providedBy(context):
         return
+    for language, record in aq_parent(context).getTranslations().items():
+        if context.hasTranslation(language):
+            continue
+        context.addTranslation(language)
 
 
 def added_col(context, event):
@@ -114,6 +118,10 @@ def added_col(context, event):
     """
     if not collageifaces.ICollageColumn.providedBy(context):
         return
+    for language, record in aq_parent(context).getTranslations().items():
+        if context.hasTranslation(language):
+            continue
+        context.addTranslation(language)
 
 
 def added_content(context, event):
@@ -170,3 +178,9 @@ def deleted_content(context, event):
     parent = aq_parent(context)
     if not collageifaces.ICollageRow.providedBy(parent):
         return
+
+
+# aq_parent(context).moveObjectToPosition(
+#     context.getId(),
+#     context.getCanonical().getObjPositionInParent()
+# )

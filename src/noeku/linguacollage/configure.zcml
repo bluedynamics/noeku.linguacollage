@@ -34,4 +34,14 @@
            Products.LinguaPlone.events.IObjectTranslatedEvent"
       handler=".subscriber.translate_col_recursivly"
   />
+  <subscriber
+      for="Products.LinguaPlone.interfaces.ITranslatable
+           Products.Archetypes.interfaces.IObjectInitializedEvent"
+      handler=".subscriber.added_row"
+  />
+  <subscriber
+      for="Products.LinguaPlone.interfaces.ITranslatable
+           Products.Archetypes.interfaces.IObjectInitializedEvent"
+      handler=".subscriber.added_col"
+  />
 </configure>

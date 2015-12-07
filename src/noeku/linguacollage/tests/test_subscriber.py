@@ -105,3 +105,35 @@ class TestSetup(unittest.TestCase):
             aq_base(collage_de['r1']['c1']['a1'].get_target()),
             aq_base(d1de)
         )
+
+    def test_add_row_to_existing(self):
+        # first translate
+        collage_de = self.collage.addTranslation('de')
+        # then add a row
+        api.content.create(
+            self.collage,
+            type='CollageRow',
+            id='r1',
+            title='Row 1'
+        )
+        # know a translated row must exist
+        self.assertIn('r1', collage_de)
+
+    def test_add_col_to_existing(self):
+        # first translate
+        collage_de = self.collage.addTranslation('de')
+        # then add a row
+        api.content.create(
+            self.collage,
+            type='CollageRow',
+            id='r1',
+            title='Row 1'
+        )
+        api.content.create(
+            self.collage['r1'],
+            type='CollageColumn',
+            id='c1',
+            title='Col 1'
+        )
+        # know a translated row must exist
+        self.assertIn('c1', collage_de['r1'])

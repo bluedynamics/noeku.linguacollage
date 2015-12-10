@@ -44,4 +44,9 @@
            Products.Archetypes.interfaces.IObjectInitializedEvent"
       handler=".subscriber.added_col"
   />
+  <subscriber
+      for="Products.LinguaPlone.interfaces.ITranslatable
+           Products.Archetypes.interfaces.IObjectInitializedEvent"
+      handler=".subscriber.added_content"
+  />
 </configure>

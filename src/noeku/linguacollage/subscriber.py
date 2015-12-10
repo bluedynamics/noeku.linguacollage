@@ -3,6 +3,7 @@ from Acquisition import aq_parent
 from Products.Collage import interfaces as collageifaces
 import logging
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -77,23 +78,7 @@ def translate_col_recursivly(context, event):
                         content.absolute_url()
                     )
                 )
-            if not target.hasTranslation(event.language):
-                raise ValueError(
-                    '"{0}" translation not found for Alias target {1}'.format(
-                        event.language,
-                        target.absolute_url()
-                    )
-                )
-        translated = content.addTranslation(event.language)
-        if collageifaces.ICollageAlias.providedBy(translated):
-            # set alias target of translation to translation of alias target :)
-            target = content.get_target()
-            translated.set_target(
-                target.getTranslation(event.language)
-            )
-        else:
-            # something left?
-            pass
+        content.addTranslation(event.language)
 
 
 def added_row(context, event):
@@ -133,22 +118,12 @@ def added_content(context, event):
     - target workflow state is private
     """
     parent = aq_parent(context)
-    if (
-        not collageifaces.ICollageRow.providedBy(parent) or
-        collageifaces.ICollageAlias.providedBy(context)
-    ):
+    if not collageifaces.ICollageColumn.providedBy(parent):
         return
-
-
-def added_alias(context, event):
-    """Event handler on create of a new content
-
-    - creates translations of itself at the right place in all
-      translations of its parent col
-    - target workflow state is private
-    """
-    if not collageifaces.ICollageAlias.providedBy(context):
-        return
+    for language in aq_parent(context).getTranslations():
+        if context.hasTranslation(language):
+            continue
+        context.addTranslation(language)
 
 
 def deleted_row(context, event):

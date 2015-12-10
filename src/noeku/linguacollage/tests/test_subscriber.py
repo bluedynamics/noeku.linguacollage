@@ -23,6 +23,7 @@ class TestSetup(unittest.TestCase):
         ltool.start_neutral = 0
         ltool.addSupportedLanguage('de')
         ltool.addSupportedLanguage('it')
+        ltool.use_cookie_negotiation = 1
         self.collage = api.content.create(
             self.portal,
             type='Collage',
@@ -30,6 +31,10 @@ class TestSetup(unittest.TestCase):
             title='EN Collage',
             language='it',
         )
+
+    def _switch_language(self, lang):
+        self.layer['request']['LANGUAGE_TOOL'] = None
+        self.layer['request']['set_language'] = lang
 
     def test_recursive_translate_collage_with_rows(self):
         api.content.create(
@@ -101,6 +106,10 @@ class TestSetup(unittest.TestCase):
         alias.set_target(self.portal.d1)
         collage_de = self.collage.addTranslation('de')
         self.assertIn('a1', collage_de['r1']['c1'])
+
+        # switch to de
+        self._switch_language('de')
+
         self.assertIs(
             aq_base(collage_de['r1']['c1']['a1'].get_target()),
             aq_base(d1de)
@@ -135,5 +144,78 @@ class TestSetup(unittest.TestCase):
             id='c1',
             title='Col 1'
         )
-        # know a translated row must exist
+        # know a translated col must exist
         self.assertIn('c1', collage_de['r1'])
+
+    def test_add_content_to_existing(self):
+        collage_de = self.collage.addTranslation('de')
+        api.content.create(
+            self.collage,
+            type='CollageRow',
+            id='r1',
+            title='Row 1'
+        )
+        api.content.create(
+            self.collage['r1'],
+            type='CollageColumn',
+            id='c1',
+            title='Col 1'
+        )
+        api.content.create(
+            self.collage['r1']['c1'],
+            type='Document',
+            id='d1',
+            title='Doc1 1'
+        )
+        # know a translated doc must exist
+        self.assertIn('d1', collage_de['r1']['c1'])
+
+    def test_add_alias_to_existing(self):
+        collage_de = self.collage.addTranslation('de')
+        api.content.create(
+            self.collage,
+            type='CollageRow',
+            id='r1',
+            title='Row 1'
+        )
+        api.content.create(
+            self.collage['r1'],
+            type='CollageColumn',
+            id='c1',
+            title='Col 1'
+        )
+        # build doc and alias
+        doc = api.content.create(
+            self.portal,
+            type='Document',
+            id='d1',
+            title='Doc 1',
+            language='it',
+        )
+        d1de = doc.addTranslation('de')
+        api.content.create(
+            self.collage['r1']['c1'],
+            type='CollageAlias',
+            id='a1',
+            title='Alias 1'
+        )
+        self.collage['r1']['c1']['a1']
+        # know a translated alias must exist
+        self.assertIn('a1', collage_de['r1']['c1'])
+
+        self.collage['r1']['c1']['a1'].set_target(self.portal.d1)
+        self.assertIs(
+            aq_base(self.collage['r1']['c1']['a1'].get_target()),
+            aq_base(doc)
+        )
+
+        # switch to de
+        self._switch_language('de')
+        self.assertIs(
+            aq_base(self.collage['r1']['c1']['a1'].get_target()),
+            aq_base(d1de)
+        )
+        self.assertIs(
+            aq_base(collage_de['r1']['c1']['a1'].get_target()),
+            aq_base(d1de)
+        )

@@ -11,36 +11,34 @@ Helps to translate Collage pages with LinguaPlone.
 Features
 --------
 
-- Can be bullet points
+- Translates Collage recursivly with all contents on translation.
+- Translates parts of a Collage recursivly
+- New rows, columns, aliases and contents are created in all prior translated languages.
+- Deleted rows, columns, aliases and content is removed in all translations.
+- All translated items are in initila state (private by default) and empty.
+- On edit of an untranslated item the split view appears.
 
 
-Documentation
--------------
+Source Code and Contributions
+=============================
 
-Full documentation for end users
+If you want to help with the development (improvement, update, bug-fixing, ...) of ``noeku.linguacollage`` this is a great idea!
 
-Installation
-------------
+The code is located in the `github bluedynamics repository <https://github.com/bluedynamics/noeku.linguacollage>`_.
 
-Install noeku.linguacollage by adding it to your buildout::
+You can fork it and work on the project.
+We are waiting for your pull requests.
 
-    [buildout]
+Maintainers of noeku.linguacollage is Jens Klein.
+We appreciate any contribution and if a release is needed to be done on pypi,
+please just contact one of us.
 
-    ...
+Contributors
+============
 
-    eggs =
-        noeku.linguacollage
+- Jens W. Klein <jens@bluedynamics.com>
 
-
-and then running ``bin/buildout``
-
-
-
-Support
--------
-
-If you are having issues, please let us know.
-dev@bluedynamics.com
+- This project was initiated and paid by `Niederösterreich Kulturwirtschaft GmbH <http://www.noeku.at>`_
 
 License
 -------

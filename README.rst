@@ -9,7 +9,7 @@ noeku.linguacollage
 Helps to translate Collage pages with LinguaPlone.
 
 Features
---------
+========
 
 - Translates Collage recursivly with all contents on translation.
 - Translates parts of a Collage recursivly
@@ -33,14 +33,7 @@ Maintainer of noeku.linguacollage is Jens Klein.
 We appreciate any contribution and if a release is needed to be done on pypi:
 please just contact one of us `BlueDynamics Developers <dev@bluedynamics.com>`_.
 
-Contributors
-============
-
-- Jens W. Klein <jens@bluedynamics.com>
-
-- This project was initiated and paid by `Niederösterreich Kulturwirtschaft GmbH <http://www.noeku.at>`_
-
 License
--------
+=======
 
 The project is licensed under the GPLv2.

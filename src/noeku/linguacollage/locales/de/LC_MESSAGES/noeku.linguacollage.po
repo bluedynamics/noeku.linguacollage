@@ -12,20 +12,20 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
-"Language-Code: en\n"
-"Language-Name: English\n"
+"Language-Code: de\n"
+"Language-Name: German\n"
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: noeku.linguacollage\n"
 
 #: ../browser/overrides/Products.Collage.browser.viewlets.delete.pt:28
 msgid "This action deletes the item and all existing translations of this item and can't be undone."
-msgstr ""
+msgstr "Diese Aktion löscht diesen Artikel und alle seine existierenden Übersetzungen. Dies kann nicht Rückgängig gemacht werden."
 
 #: ../browser/overrides/Products.Collage.browser.viewlets.delete.pt:44
 msgid "This will delete the item and all existing translations."
-msgstr ""
+msgstr "Der Artikel wird mitsamt seiner Übersetzungen gelöscht."
 
 #: ../browser/overrides/Products.Collage.browser.viewlets.delete.pt:37
 msgid "This will remove the alias and all existing translations."
-msgstr ""
+msgstr "Der Alias wird mitsamt seiner Übersetzungen entfernt."
 

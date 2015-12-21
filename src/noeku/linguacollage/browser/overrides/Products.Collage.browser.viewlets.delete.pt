@@ -1,0 +1,55 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     xmlns:metal="http://xml.zope.org/namespaces/metal"
+     i18n:domain="collage"
+     tal:omit-tag="">
+
+  <div class="expandable-section">
+
+    <a class="action expandable-label"
+       tal:attributes="href python:'%s/delete-object' % view.getImmediateObject().absolute_url()">
+      <div class="delete-object-icon"></div>
+      <span tal:condition="view/isAlias"
+            i18n:translate="label_remove"
+            i18n:domain="plone">Remove</span>
+      <span tal:condition="not: view/isAlias"
+            i18n:translate="label_delete"
+            i18n:domain="plone">Delete</span>
+    </a>
+
+    <div class="expandable-content">
+      <h4 i18n:translate="label_delete">
+        Delete
+      </h4>
+
+      <div class="inner-content">
+        <dl class="portalMessage warning">
+          <dt i18n:translate="">Warning</dt>
+          <dd i18n:domain="noeku.linguacollage"
+              i18n:translate="">
+            This action deletes the item and all existing translations of this item and can't be undone.
+          </dd>
+        </dl>
+
+        <form method="post"
+              tal:attributes="action python:'%s/delete-object' % view.getImmediateObject().absolute_url()">
+          <tal:alias condition="view/isAlias">
+            <p i18n:domain="noeku.linguacollage" i18n:translate="" class="discreet">
+              This will remove the alias and all existing translations.
+            </p>
+            <input type="submit" name="remove" value="Remove" i18n:attributes="value" />
+          </tal:alias>
+
+          <tal:content condition="not: view/isAlias">
+            <p i18n:domain="noeku.linguacollage" i18n:translate="" class="discreet">
+              This will delete the item and all existing translations.
+            </p>
+            <input type="submit" name="delete" value="Delete" i18n:attributes="value" />
+          </tal:content>
+
+        </form>
+        <div class="visualClear"><!-- nothing here --></div>
+      </div>
+    </div>
+  </div>
+</div>

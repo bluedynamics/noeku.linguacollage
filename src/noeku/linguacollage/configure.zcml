@@ -19,6 +19,8 @@
       handler=".setuphandlers.post_install"
       name="noeku.linguacollage-postInstall"
       title="noeku.linguacollage post_install import step"></genericsetup:importStep>
+
+  <!-- translated -->
   <subscriber
       for="Products.LinguaPlone.interfaces.ITranslatable
            Products.LinguaPlone.events.IObjectTranslatedEvent"
@@ -34,14 +36,16 @@
            Products.LinguaPlone.events.IObjectTranslatedEvent"
       handler=".subscriber.translate_col_recursivly"
   />
+
+  <!-- added -->
   <subscriber
       for="Products.LinguaPlone.interfaces.ITranslatable
-           Products.Archetypes.interfaces.IObjectInitializedEvent"
+           zope.lifecycleevent.interfaces.IObjectAddedEvent"
       handler=".subscriber.added_row"
   />
   <subscriber
       for="Products.LinguaPlone.interfaces.ITranslatable
-           Products.Archetypes.interfaces.IObjectInitializedEvent"
+           zope.lifecycleevent.interfaces.IObjectAddedEvent"
       handler=".subscriber.added_col"
   />
   <subscriber
@@ -49,4 +53,17 @@
            Products.Archetypes.interfaces.IObjectInitializedEvent"
       handler=".subscriber.added_content"
   />
+  <subscriber
+      for="Products.Collage.interfaces.ICollageAlias
+           zope.lifecycleevent.interfaces.IObjectAddedEvent"
+      handler=".subscriber.added_content"
+  />
+
+  <!-- removed -->
+  <subscriber
+      for="Products.LinguaPlone.interfaces.ITranslatable
+           noeku.linguacollage.patches.IVeryEarlyObjectWillBeDeleted"
+      handler=".subscriber.deleted_collage_item"
+  />
+
 </configure>

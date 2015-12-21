@@ -36,6 +36,13 @@ class TestSetup(unittest.TestCase):
         self.layer['request']['LANGUAGE_TOOL'] = None
         self.layer['request']['set_language'] = lang
 
+    def _reset_request(self):
+        from noeku.linguacollage.subscriber import _MARK_MODE
+        for mode in ['add', 'recursive']:
+            mark = _MARK_MODE.format(mode)
+            if mark in self.layer['request']:
+                self.layer['request'][mark] = False
+
     def test_recursive_translate_collage_with_rows(self):
         api.content.create(
             self.collage,
@@ -49,6 +56,7 @@ class TestSetup(unittest.TestCase):
             id='2',
             title='Row 2'
         )
+        self._reset_request()
         collage_de = self.collage.addTranslation('de')
         self.assertIn('1', collage_de)
         self.assertIn('2', collage_de)
@@ -72,6 +80,7 @@ class TestSetup(unittest.TestCase):
             id='c2',
             title='Col 2'
         )
+        self._reset_request()
         collage_de = self.collage.addTranslation('de')
         self.assertIn('c1', collage_de['r1'])
         self.assertIn('c2', collage_de['r1'])
@@ -84,19 +93,23 @@ class TestSetup(unittest.TestCase):
             title='Doc 1',
             language='it',
         )
+        self._reset_request()
         d1de = self.portal.d1.addTranslation('de')
+        self._reset_request()
         api.content.create(
             self.collage,
             type='CollageRow',
             id='r1',
             title='Row 1'
         )
+        self._reset_request()
         api.content.create(
             self.collage['r1'],
             type='CollageColumn',
             id='c1',
             title='Col 1'
         )
+        self._reset_request()
         alias = api.content.create(
             self.collage['r1']['c1'],
             type='CollageAlias',
@@ -104,6 +117,7 @@ class TestSetup(unittest.TestCase):
             title='Alias 1'
         )
         alias.set_target(self.portal.d1)
+        self._reset_request()
         collage_de = self.collage.addTranslation('de')
         self.assertIn('a1', collage_de['r1']['c1'])
 
@@ -118,6 +132,7 @@ class TestSetup(unittest.TestCase):
     def test_add_row_to_existing(self):
         # first translate
         collage_de = self.collage.addTranslation('de')
+        self._reset_request()
         # then add a row
         api.content.create(
             self.collage,
@@ -125,12 +140,13 @@ class TestSetup(unittest.TestCase):
             id='r1',
             title='Row 1'
         )
-        # know a translated row must exist
+        # now a translated row must exist
         self.assertIn('r1', collage_de)
 
     def test_add_col_to_existing(self):
         # first translate
         collage_de = self.collage.addTranslation('de')
+        self._reset_request()
         # then add a row
         api.content.create(
             self.collage,
@@ -138,52 +154,59 @@ class TestSetup(unittest.TestCase):
             id='r1',
             title='Row 1'
         )
+        self._reset_request()
         api.content.create(
             self.collage['r1'],
             type='CollageColumn',
             id='c1',
             title='Col 1'
         )
-        # know a translated col must exist
+        # now a translated col must exist
         self.assertIn('c1', collage_de['r1'])
 
     def test_add_content_to_existing(self):
         collage_de = self.collage.addTranslation('de')
+        self._reset_request()
         api.content.create(
             self.collage,
             type='CollageRow',
             id='r1',
             title='Row 1'
         )
+        self._reset_request()
         api.content.create(
             self.collage['r1'],
             type='CollageColumn',
             id='c1',
             title='Col 1'
         )
+        self._reset_request()
         api.content.create(
             self.collage['r1']['c1'],
             type='Document',
             id='d1',
             title='Doc1 1'
         )
-        # know a translated doc must exist
+        # now a translated doc must exist
         self.assertIn('d1', collage_de['r1']['c1'])
 
     def test_add_alias_to_existing(self):
         collage_de = self.collage.addTranslation('de')
+        self._reset_request()
         api.content.create(
             self.collage,
             type='CollageRow',
             id='r1',
             title='Row 1'
         )
+        self._reset_request()
         api.content.create(
             self.collage['r1'],
             type='CollageColumn',
             id='c1',
             title='Col 1'
         )
+        self._reset_request()
         # build doc and alias
         doc = api.content.create(
             self.portal,
@@ -192,7 +215,9 @@ class TestSetup(unittest.TestCase):
             title='Doc 1',
             language='it',
         )
+        self._reset_request()
         d1de = doc.addTranslation('de')
+        self._reset_request()
         api.content.create(
             self.collage['r1']['c1'],
             type='CollageAlias',
@@ -200,7 +225,7 @@ class TestSetup(unittest.TestCase):
             title='Alias 1'
         )
         self.collage['r1']['c1']['a1']
-        # know a translated alias must exist
+        # now a translated alias must exist
         self.assertIn('a1', collage_de['r1']['c1'])
 
         self.collage['r1']['c1']['a1'].set_target(self.portal.d1)

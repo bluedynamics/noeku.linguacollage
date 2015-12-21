@@ -15,7 +15,7 @@ Features
 - Translates parts of a Collage recursivly
 - New rows, columns, aliases and contents are created in all prior translated languages.
 - Deleted rows, columns, aliases and content is removed in all translations.
-- All translated items are in initila state (private by default) and empty.
+- All translated items are in initial state (private by default) and empty.
 - On edit of an untranslated item the split view appears.
 
 
@@ -29,9 +29,9 @@ The code is located in the `github bluedynamics repository <https://github.com/b
 You can fork it and work on the project.
 We are waiting for your pull requests.
 
-Maintainers of noeku.linguacollage is Jens Klein.
-We appreciate any contribution and if a release is needed to be done on pypi,
-please just contact one of us.
+Maintainer of noeku.linguacollage is Jens Klein.
+We appreciate any contribution and if a release is needed to be done on pypi:
+please just contact one of us `BlueDynamics Developers <dev@bluedynamics.com>`_.
 
 Contributors
 ============

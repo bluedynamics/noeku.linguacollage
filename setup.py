@@ -46,6 +46,7 @@ setup(
         'plone.api',
         'Products.Collage',
         'Products.LinguaPlone',
+        'Products.statusmessages',
         'setuptools',
         'z3c.jbot',
     ],

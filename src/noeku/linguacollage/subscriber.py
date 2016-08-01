@@ -2,6 +2,7 @@
 from Acquisition import aq_parent
 from Acquisition import aq_base
 from Products.Collage import interfaces as collageifaces
+from Products.statusmessages.interfaces import IStatusMessage
 import logging
 
 
@@ -122,6 +123,11 @@ def translate_col_recursivly(context, event):
                         content.absolute_url()
                     )
                 )
+            elif not target.hasTranslation(event.language):
+                msg = 'Der verknüpfte Alias <a href="{0}">{1}</a> wurde noch nicht übersetzt.'.format(
+                    target.absolute_url(), target.absolute_url()
+                )
+                IStatusMessage(context.REQUEST).addStatusMessage(msg, type='warn')
         content.addTranslation(event.language)
 
 

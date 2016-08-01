@@ -5,7 +5,8 @@ Changelog
 1.0a2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Added status message if target alias is not translated
+  [SyZn]
 
 
 1.0a1 (2015-12-21)
